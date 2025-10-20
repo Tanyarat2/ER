@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <!-- Header -->
+    <!-- Header -->
   <header class="header" role="banner">
     <div class="header-left">
       <div class="logo-circle" aria-hidden="true">ER</div>
@@ -31,7 +31,7 @@
         <div class="grid-2">
           <input type="text" id="patientID" placeholder="Patient ID">
           <input type="text" id="nationalID" placeholder="National ID">
-          <input type="date" id="birthday">
+          <input type="date" id="birthday" placeholder="Date of Birth">
           <input type="text" id="fullName" placeholder="Full Name">
           <select id="gender">
             <option value="">Gender</option>
@@ -160,12 +160,12 @@ numberControls.forEach(control => {
 const form = document.getElementById('erForm');
 form.addEventListener('submit', function(e) {
   const requiredFields = [
-    {id: 'heartRate', name: 'Heart Rate'},
-    {id: 'bpMin', name: 'BP Min'},
-    {id: 'bpMax', name: 'BP Max'},
-    {id: 'temp', name: 'Temperature'},
-    {id: 'o2', name: 'O2 Saturation'},
-    {id: 'respRate', name: 'Respiratory Rate'},
+    {id: 'heartRate', name: 'heartRate'},
+    {id: 'bpMin', name: 'bpMin'},
+    {id: 'bpMax', name: 'bpMax'},
+    {id: 'temp', name: 'temp'},
+    {id: 'o2', name: 'o2'},
+    {id: 'respRate', name: 'respRate'},
     {id: 'symptoms', name: 'symptoms'}
   ];
 
@@ -188,4 +188,3 @@ form.addEventListener('submit', function(e) {
   </script>
 </body>
 </html>
-
