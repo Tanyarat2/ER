@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ER Form</title>
+  <link rel="stylesheet" href="form_style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" role="banner">
+    <div class="header-left">
+      <div class="logo-circle" aria-hidden="true">ER</div>
+    </div>
+
+    <div class="header-right">
+      <div class="user-dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <span class="user-icon">👤</span>
+        <span class="username">Dr. Alice Bob</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <form id="erForm">
+
+      <!-- Patient Information -->
+      <section class="card">
+        <h2>Patient Information</h2>
+        <div class="grid-2">
+          <input type="text" id="patientID" placeholder="Patient ID">
+          <input type="text" id="nationalID" placeholder="National ID">
+          <input type="date" id="birthday">
+          <input type="text" id="fullName" placeholder="Full Name">
+          <select id="gender">
+            <option value="">Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Vital Signs -->
+      <section class="card">
+        <h2>Vital Signs</h2>
+        <div class="vital-grid">
+          <div class="vs-item">
+            <label>Heart Rate (bpm)</label>
+            <div class="number-input">
+              <button type="button" class="minus">-</button>
+              <input type="number" id="heartRate" value="" placeholder="">
+              <button type="button" class="plus">+</button>
+            </div>
+          </div>
+          <div class="vs-item">
+            <label>BP (mmHg/min)</label>
+            <div class="number-input">
+              <button type="button" class="minus">-</button>
+              <input type="number" id="bpMin" value="" placeholder="">
+              <button type="button" class="plus">+</button>
+            </div>
+          </div>
+          <div class="vs-item">
+            <label>BP (mmHg/max)</label>
+            <div class="number-input">
+              <button type="button" class="minus">-</button>
+              <input type="number" id="bpMax" value="" placeholder="">
+              <button type="button" class="plus">+</button>
+            </div>
+          </div>
+          <div class="vs-item">
+            <label>Temperature (°C)</label>
+            <div class="number-input">
+              <button type="button" class="minus">-</button>
+              <input type="number" id="temp" value="" placeholder="">
+              <button type="button" class="plus">+</button>
+            </div>
+          </div>
+          <div class="vs-item">
+            <label>O2 Saturation (%)</label>
+            <div class="number-input">
+              <button type="button" class="minus">-</button>
+              <input type="number" id="o2" value="" placeholder="">
+              <button type="button" class="plus">+</button>
+            </div>
+          </div>
+          <div class="vs-item">
+            <label>Respiratory Rate (/min)</label>
+            <div class="number-input">
+              <button type="button" class="minus">-</button>
+              <input type="number" id="respRate" value="" placeholder="">
+              <button type="button" class="plus">+</button>
+            </div>
+          </div>
+
+          <!-- Pain Level -->
+          <div class="vs-item pain">
+            <label>Pain Level (1–10)</label>
+            <div class="pain-buttons">
+              <button type="button">1</button><button type="button">2</button><button type="button">3</button><button type="button">4</button><button type="button">5</button>
+              <button type="button">6</button><button type="button">7</button><button type="button">8</button><button type="button">9</button><button type="button">10</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Emergency Indicators -->
+      <section class="card">
+        <h2>Emergency Indicators</h2>
+        <div class="indicators">
+          <button type="button">Unconscious</button>
+          <button type="button">Bleeding</button>
+          <button type="button">Breathing Difficulty</button>
+          <button type="button">Chest Pain</button>
+          <button type="button">Seizure</button>
+          <button type="button">Trauma</button>
+        </div>
+      </section>
+
+      <!-- Symptoms -->
+      <section class="card symptom">
+        <h2>Symptoms</h2>
+        <input type="text" id="symptoms" placeholder="Symptoms">
+      </section>
+
+      <!-- Submit Button -->
+      <div class="submit-btn">
+        <button type="submit">Submit</button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    // Pain level
+const painButtons = document.querySelectorAll('.pain-buttons button');
+painButtons.forEach((btn, index) => {
+  btn.addEventListener('click', () => {
+    painButtons.forEach((b, i) => b.classList.toggle('active', i <= index));
+  });
+});
+
+// Emergency multi-select
+const indicators = document.querySelectorAll('.indicators button');
+indicators.forEach(btn => btn.addEventListener('click', () => btn.classList.toggle('active')));
+
+// Vital Signs + / -
+const numberControls = document.querySelectorAll('.number-input');
+numberControls.forEach(control => {
+  const input = control.querySelector('input');
+  const plus = control.querySelector('.plus');
+  const minus = control.querySelector('.minus');
+  plus.addEventListener('click', () => input.value = (parseInt(input.value)||0)+1);
+  minus.addEventListener('click', () => input.value = (parseInt(input.value)||0)-1);
+});
+
+// Form submit validation
+const form = document.getElementById('erForm');
+form.addEventListener('submit', function(e) {
+  const requiredFields = [
+    {id: 'heartRate', name: 'Heart Rate'},
+    {id: 'bpMin', name: 'BP Min'},
+    {id: 'bpMax', name: 'BP Max'},
+    {id: 'temp', name: 'Temperature'},
+    {id: 'o2', name: 'O2 Saturation'},
+    {id: 'respRate', name: 'Respiratory Rate'},
+    {id: 'symptoms', name: 'symptoms'}
+  ];
+
+  let missing = [];
+  requiredFields.forEach(field => {
+    const el = document.getElementById(field.id);
+    if (!el.value) missing.push(field.name);
+  });
+
+  // ตรวจ Pain Level
+  const painSelected = document.querySelector('.pain-buttons button.active');
+  if (!painSelected) missing.push('Pain Level');
+
+  if (missing.length > 0) {
+    e.preventDefault();
+    alert('Please fill in the following fields: \n' + missing.join('\n'));
+  }
+});
+
+  </script>
+</body>
+</html>
